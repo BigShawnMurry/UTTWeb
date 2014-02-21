@@ -1,0 +1,77 @@
+﻿@model List<UTT.Models.ShowMore>
+
+
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width" />
+    <title>DisplayMoreUTT</title>
+</head>
+    <body>
+        <div class="body">
+            <div class="centered">
+            @{ int count =0;}
+            @foreach(var item in Model)
+            {   count++;
+                 
+                if(count==1)
+                {
+                <h1 style="color:white">More Information about Ticket #@item.TicketNumber for passenger @item.TravelerName </h1>
+            }
+            }
+            </div>
+            <div class="float-left">
+                <table border="1" style="color:white;border-color:white;border:medium" >
+                    <tr>
+                        <th>Invoice Number</th>
+                        <th>Record Locator</th>
+                        <th>PCC</th>
+                        <th>Customer Account Number</th>
+                        <th>Issue Date</th>
+                        <th>Expiration Date</th>
+                        <th>Airline</th>
+                        <th>Total Air Fare Value</th>
+                        <th>Currency Code</th>
+                        <th>Seat Class</th>
+                        <th>Ticket Status</th>
+                        <th>Refundable Status</th>
+                        <th>Open Segment Status</th>
+                        <th>Fare Basis Code</th>
+                        <th>PAR</th>
+                        <th>BAR</th>
+                        <th>City Pairs</th>
+                        <th>Airfare</th>
+                       
+
+                    </tr>
+                   
+                        @foreach (var tix in Model)
+                        { 
+                         <tr>
+                             <td>@tix.InvoiceNumber</td>
+                             <td>@tix.RecordLocator</td>
+                             <td>@tix.PCC</td>
+                             <td>@tix.CustAccNum</td>
+                             <td>@tix.IssueDate</td>
+                             <td>@tix.ExpirationDate</td>
+                             <td>@tix.Airline</td>
+                             <td>@tix.TotalAirFairValue</td>
+                             <td>@tix.CurrencyCode</td>
+                             <td>@tix.SeatClass</td>
+                             <td>@tix.ticketStatus</td>
+                             <td>@tix.refundableStat</td>
+                             <td>@tix.OpenSegmentStatus</td>
+                             <td>@tix.FareBasisCode</td>
+                             <td>@tix.PAR</td>
+                             <td>@tix.BAR</td>
+                             <td>@tix.CityPairs</td>
+                             <td>@tix.airfare</td>
+                             
+                         </tr>
+                        }
+                    
+                </table>
+            </div> 
+        </div>
+    </body>
+</html>

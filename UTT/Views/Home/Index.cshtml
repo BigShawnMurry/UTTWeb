@@ -1,0 +1,19 @@
+﻿@model UTT.Models.UTTModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+<div class="body">
+<h2 style="color:white;"> Unused Ticket Search</h2>
+<span style="background-color:Yellow; color:Red; margin:1em;">@ViewBag.message</span><br /><br />
+
+@using(Html.BeginForm("Index","Home",FormMethod.Post)){
+<span style="color:white;" >
+Enter the <br />
+Traveler Email @Html.TextBox("traveler", null, new { style="width:200px; font-size:small;" })
+<br /><br />
+<button type="submit">Display</button></span>
+}
+</div>

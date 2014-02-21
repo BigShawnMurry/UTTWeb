@@ -1,0 +1,25 @@
+﻿@model UTT.Models.UTTModel
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>UTTSearch</title>
+</head>
+<body>
+    <div>
+         @using (Html.BeginForm("UTTSearch", "UTTController", FormMethod.Post))
+        { 
+          <div class="centered">
+              <b>Client Email</b>
+              @*@Html.TextBox("ClientEmail", Model.ClientEmail, new { style="width:200px;font-size:small;"})
+         *@
+           
+    </div>
+</body>
+</html>
