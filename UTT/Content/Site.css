@@ -93,6 +93,7 @@ h5, h6 {
         text-decoration: none;
     }
 
+
 /* main layout
 ----------------------------------------------------------*/
 .content-wrapper {
@@ -540,15 +541,22 @@ input[type="checkbox"].input-validation-error {
 table {
     border-collapse: collapse;
     border-spacing: 0;
+    text-align:center;
+    vertical-align:middle;
     margin-top: 0.75em;
-    border: 1 solid;
+    border: 1px solid;
+    color:white;
+    border-color:white;
+    border:medium
 }
 
 th {
     font-size: 1.2em;
-    text-align: left;
+    text-align: center;
+    vertical-align:middle;
     border: solid 1px;
-    padding-left: 0;
+    padding-left: 10px;
+    padding-right:10px;
 }
 
     th a {
@@ -588,8 +596,12 @@ th {
     }
 
 td {
-    padding: 0.25em 2em 0.25em 0em;
-    border: 1 solid;
+    padding-left:10px;
+    padding-right:10px;
+    text-align:center;
+    vertical-align:middle;
+    border: 1px solid;
+
 }
 
 tr.pager td {
