@@ -103,23 +103,25 @@ namespace UTT.Controllers
             while (rd.Read()) 
             {
                 var moinf = new ShowMore();
-                moinf.airfare = (Decimal)rd["nAirFare"];
+                
                 moinf.Airline = rd["szAirline"].ToString();
                 moinf.CityPairs = rd["szCityPair"].ToString();
                 moinf.TravelerName = rd["ClientName"].ToString();
                 moinf.BAR = rd["BAR"].ToString();
                 moinf.PAR = rd["PAR"].ToString();
-                moinf.CurrencyCode = rd["szCurrencyCode"].ToString();
+                
                 moinf.CustAccNum = rd["szCustomerNumber"].ToString();
                 moinf.ExpirationDate =(DateTime) rd["dtExpiryDate"];
                 moinf.FareBasisCode = rd["szFareBasisCode"].ToString();
-                moinf.InvoiceNumber = rd["szInvoiceNumber"].ToString();
+                moinf.DepartmentCode = rd["szDepartmentCode"].ToString();
                 moinf.IssueDate = (DateTime)rd["dtIssued"];
-                moinf.OpenSegmentStatus = rd["szOpenSegments"].ToString();
+             
                 moinf.PCC = rd["szPCC"].ToString();
                 moinf.RecordLocator = rd["RecordLocator"].ToString();
                 moinf.refundableStat = rd["blnRefundable"].ToString();
-                moinf.SeatClass = rd["szSeatClass"].ToString();
+                if(moinf.refundableStat.Equals("true"))
+                { moinf.refundableStat = "Refundable"; }
+                else { moinf.refundableStat = "Nonrefundable"; }
                 moinf.TicketNumber = ticketnum;
                 moinf.ticketStatus = rd["szStatus"].ToString();
                 moinf.TotalAirFairValue = (Decimal)rd["nTotalAirFare"];

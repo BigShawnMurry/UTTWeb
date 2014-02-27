@@ -16,58 +16,81 @@
                  
                 if(count==1)
                 {
-                <h1 style="color:white">More Information about Ticket #@item.TicketNumber for passenger @item.TravelerName </h1>
+                <h1 style="color:white">More Information about<br /> Ticket #@item.TicketNumber <br />for passenger @item.TravelerName </h1>
             }
             }
             </div>
             <div class="float-left">
-                <table border="1" >
+               
+                 <table border="1" >
+                @foreach (var tix in Model)
+                        {     <tr>
+                        <th scope="row">Name Statement Info</th>
+                        <td>@tix.DepartmentCode</td>
+                        </tr>
                     <tr>
-                        <th >Invoice Number</th>
-                        <th>Record Locator</th>
-                        <th>PCC</th>
-                        <th>Customer ID</th>
-                        <th>Issue Date</th>
-                        <th>Expiration Date</th>
-                        <th>Airline</th>
-                        <th>Total Air Fare Value</th>
-                        <th>Currency Code</th>
-                        <th>Seat Class</th>
-                        <th>Ticket Status</th>
-                        <th>Refundable Status</th>
-                        <th>Open Segment Status</th>
-                        <th>Fare Basis Code</th>
-                        <th>PAR</th>
-                        <th>BAR</th>
-                        <th>City Pairs</th>
-                        <th>Airfare</th>
-                       
+                        <th scope="row">Record Locator</th>
+                       <td>@tix.RecordLocator</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">PCC</th>
+                        <td>@tix.PCC</td>
 
                     </tr>
+                         
+                    <tr>
+                        <th scope="row">Customer ID</th>
+                        <td>@tix.CustAccNum</td>
+
+                    </tr>
+                    <tr>   
+                        <th scope="row">Issue Date</th>
+                        <td>@tix.IssueDate</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Expiration Date</th>
+                        <td>@tix.ExpirationDate</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Airline</th>
+                        <td>@tix.Airline</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">Total Air Fare Value</th>
+                        <td>@tix.TotalAirFairValue</td>
+                    </tr>
+                       <tr>
+                        <th scope="row">Ticket Status</th>
+                        <td>@tix.ticketStatus</td>
+                       </tr>
+                    <tr>
+                        <th scope="row">Refundable Status</th>
+                        <td>@tix.refundableStat</td>
+                     </tr>   
+                    <tr>
+                        <th scope="row">Fare Basis Code</th>
+                        <td>@tix.FareBasisCode</td>
+                    </tr>
+                    <tr>
+                        <th scope="row">ProfLvl2(PAR)</th>
+                        <td>@tix.PAR</td>
+                    </tr>
+                    <tr>    
+                        <th scope="row">ProfLvl1(BAR)</th>
+                        <td>@tix.BAR</td>
+                     </tr>
+                    <tr>
+                        <th scope="row">City Pairs</th>
+                        <td>@tix.CityPairs</td>
+                     </tr>
+                       
+
+                    
                    
-                        @foreach (var tix in Model)
-                        { 
-                         <tr>
-                             <td>@tix.InvoiceNumber</td>
-                             <td>@tix.RecordLocator</td>
-                             <td>@tix.PCC</td>
-                             <td>@tix.CustAccNum</td>
-                             <td>@tix.IssueDate</td>
-                             <td>@tix.ExpirationDate</td>
-                             <td>@tix.Airline</td>
-                             <td>@tix.TotalAirFairValue</td>
-                             <td>@tix.CurrencyCode</td>
-                             <td>@tix.SeatClass</td>
-                             <td>@tix.ticketStatus</td>
-                             <td>@tix.refundableStat</td>
-                             <td>@tix.OpenSegmentStatus</td>
-                             <td>@tix.FareBasisCode</td>
-                             <td>@tix.PAR</td>
-                             <td>@tix.BAR</td>
-                             <td>@tix.CityPairs</td>
-                             <td>@tix.airfare</td>
+                        
+                         
                              
-                         </tr>
+                          
                         }
                     
                 </table>
