@@ -3,7 +3,12 @@
 @{
     ViewBag.Title = "Home Page";
 }
-<script type="text/javascript" charset="utf-8">
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="ISO-8859-1">
+        <title>Home Page</title>
+        <script type="text/javascript" charset="utf-8">
     var itPl = '<TravelItineraryReadRQ xmlns="http://webservices.sabre.com/sabreXML/2003/07" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" TimeStamp="2012-12-20T16:00:00" Version="1.1.1"><POS><Source PseudoCityCode="IPCC"/></POS><MessagingDetails><Transaction Code="PNR"/></MessagingDetails></TravelItineraryReadRQ>';
     function callSWSWrapper() {
         var act = "TravelItineraryReadLLSRQ"
@@ -13,17 +18,30 @@
         document.forms["sws"]["traveler"].innerText = result;
     }
 </script>
+    </head>
 
+<body >
 <div class="body">
-    <form name="sws">
+
+    @*<form  name="sws">*@
 <h2 style="color:white;"> Unused Ticket Search</h2>
 <span style="background-color:Yellow; color:Red; margin:1em;">@ViewBag.message</span><br /><br />
     
-@using(Html.BeginForm("Index","Home",FormMethod.Post)){
+@using (Html.BeginForm("Index", "Home", FormMethod.Post, new { name="sws"}))
+{
 <span style="color:white;" >
 Enter the <br />
-Traveler Email @Html.TextBox("traveler", null, new { style="width:200px; font-size:small;" })
-<br /><br />
+Traveler Email @Html.TextBox("traveler", null, new { style = "width:200px; font-size:small;" })
+   
+<br />
+    Type(s) of Unused Tickets to be Displayed <select name="UTTSelect">
+        <option value="OpenPartial">Open and Partially Open</option>
+        <option value="Used">Used/Exchanged/Refunded</option>
+        <option value="All">All</option>
+                                             </select>
+    <br />
 <button type="submit">Display</button></span>
-}</form>
+}@*</form>*@
 </div>
+</body>
+</html>

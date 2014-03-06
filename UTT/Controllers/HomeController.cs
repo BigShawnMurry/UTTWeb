@@ -16,7 +16,7 @@ namespace UTT.Controllers
         // GET: /Default1/
        
         
-        public ActionResult Index(string traveler, bool? found)
+        public ActionResult Index(string traveler, bool? found,string UTTSelect)
         {
             if (found.HasValue)
             {
@@ -28,13 +28,13 @@ namespace UTT.Controllers
             if (!string.IsNullOrEmpty(traveler))
             {
                 traveler = traveler.ToUpper();
-                return RedirectToAction("DisplayUTT", new { email = traveler });
+                return RedirectToAction("DisplayUTT", new { email = traveler,UTTsel=UTTSelect });
             }
             
             return View();
         }
         //shows the initial UTT results set on the webpage
-        public ActionResult DisplayUTT(string email)
+        public ActionResult DisplayUTT(string email,string UTTsel)
         {
             string em = email;
             var u = new UTTModel();
@@ -47,7 +47,7 @@ namespace UTT.Controllers
 
             if (u.TravelerName != null )
             {
-
+                if (UTTsel == "All") { 
                 SqlDataReader rd = null;
                 string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
                 SqlConnection sqlcon = new SqlConnection(con);
@@ -66,8 +66,51 @@ namespace UTT.Controllers
                     ut.TicketNumber = rd["szTicketNumber"].ToString();
                     ut.TravelerName = u.TravelerName;
                     utt.Add(ut);
+                }}
+                if (UTTsel == "Used")
+                {
+                    SqlDataReader rd = null;
+                    string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
+                    SqlConnection sqlcon = new SqlConnection(con);
+                    sqlcon.Open();
+                    SqlCommand com = new SqlCommand("sp_UTTUSED", sqlcon);
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@CEmail", em);
+                    rd = com.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        var ut = new UTTModel();
+                        ut.ExpirationDate = (DateTime)rd["dtExpiryDate"];
+                        ut.Airline = rd["szAirline"].ToString();
+                        ut.Value = rd["szTotalValue"].ToString();
+                        ut.TicketNumber = rd["szTicketNumber"].ToString();
+                        ut.TravelerName = u.TravelerName;
+                        utt.Add(ut);
+                    }
                 }
-            
+                if(UTTsel == "OpenPartial")
+                {
+                    SqlDataReader rd = null;
+                    string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
+                    SqlConnection sqlcon = new SqlConnection(con);
+                    sqlcon.Open();
+                    SqlCommand com = new SqlCommand("sp_UTTOpen", sqlcon);
+                    com.CommandType = CommandType.StoredProcedure;
+                    com.Parameters.AddWithValue("@CEmail", em);
+                    rd = com.ExecuteReader();
+
+                    while (rd.Read())
+                    {
+                        var ut = new UTTModel();
+                        ut.ExpirationDate = (DateTime)rd["dtExpiryDate"];
+                        ut.Airline = rd["szAirline"].ToString();
+                        ut.Value = rd["szTotalValue"].ToString();
+                        ut.TicketNumber = rd["szTicketNumber"].ToString();
+                        ut.TravelerName = u.TravelerName;
+                        utt.Add(ut);
+                    }
+                }
           
             
             
