@@ -20,7 +20,7 @@ namespace UTT.Models
       
         public string Airline { get; set; }
      
-        public DateTime ExpirationDate { get; set; }
+        public string ExpirationDate { get; set; }
    
        
     }

@@ -36,6 +36,7 @@ namespace UTT.Controllers
         //shows the initial UTT results set on the webpage
         public ActionResult DisplayUTT(string email,string UTTsel)
         {
+            DateTime exp;
             string em = email;
             var u = new UTTModel();
             u.TravelerName = getTravelerName(em);
@@ -60,7 +61,8 @@ namespace UTT.Controllers
                 while (rd.Read())
                 {
                     var ut = new UTTModel();
-                    ut.ExpirationDate = (DateTime)rd["dtExpiryDate"];
+                    exp = (DateTime)rd["dtExpiryDate"];
+                    ut.ExpirationDate = exp.ToShortDateString();
                     ut.Airline = rd["szAirline"].ToString();
                     ut.Value = rd["szTotalValue"].ToString();
                     ut.TicketNumber = rd["szTicketNumber"].ToString();
@@ -81,7 +83,8 @@ namespace UTT.Controllers
                     while (rd.Read())
                     {
                         var ut = new UTTModel();
-                        ut.ExpirationDate = (DateTime)rd["dtExpiryDate"];
+                        exp = (DateTime)rd["dtExpiryDate"];
+                        ut.ExpirationDate = exp.ToShortDateString();
                         ut.Airline = rd["szAirline"].ToString();
                         ut.Value = rd["szTotalValue"].ToString();
                         ut.TicketNumber = rd["szTicketNumber"].ToString();
@@ -99,11 +102,12 @@ namespace UTT.Controllers
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@CEmail", em);
                     rd = com.ExecuteReader();
-
+                   
                     while (rd.Read())
                     {
                         var ut = new UTTModel();
-                        ut.ExpirationDate = (DateTime)rd["dtExpiryDate"];
+                       exp = (DateTime)rd["dtExpiryDate"];
+                       ut.ExpirationDate = exp.ToShortDateString();
                         ut.Airline = rd["szAirline"].ToString();
                         ut.Value = rd["szTotalValue"].ToString();
                         ut.TicketNumber = rd["szTicketNumber"].ToString();
@@ -142,7 +146,8 @@ namespace UTT.Controllers
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@ticknum", ticketnum);
             rd = com.ExecuteReader();
-
+            DateTime issue;
+            DateTime exp;
             while (rd.Read()) 
             {
                 var moinf = new ShowMore();
@@ -154,10 +159,12 @@ namespace UTT.Controllers
                 moinf.PAR = rd["PAR"].ToString();
                 
                 moinf.CustAccNum = rd["szCustomerNumber"].ToString();
-                moinf.ExpirationDate =(DateTime) rd["dtExpiryDate"];
+                exp =(DateTime) rd["dtExpiryDate"];
+                moinf.IssueDate = exp.ToShortDateString();
                 moinf.FareBasisCode = rd["szFareBasisCode"].ToString();
                 moinf.DepartmentCode = rd["szDepartmentCode"].ToString();
-                moinf.IssueDate = (DateTime)rd["dtIssued"];
+                issue = (DateTime)rd["dtIssued"];
+                moinf.IssueDate = issue.ToShortDateString();
              
                 moinf.PCC = rd["szPCC"].ToString();
                 moinf.RecordLocator = rd["RecordLocator"].ToString();

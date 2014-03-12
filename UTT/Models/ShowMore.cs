@@ -31,8 +31,8 @@ namespace UTT.Models
         public string BAR { get; set; }
         public string FareBasisCode { get; set; }
      
-        public DateTime IssueDate { get; set; }
-        public DateTime ExpirationDate { get; set; }
+        public string IssueDate { get; set; }
+        public string ExpirationDate { get; set; }
      
     }
 }
