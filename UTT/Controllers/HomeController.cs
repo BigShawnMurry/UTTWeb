@@ -159,8 +159,8 @@ namespace UTT.Controllers
                 moinf.PAR = rd["PAR"].ToString();
                 
                 moinf.CustAccNum = rd["szCustomerNumber"].ToString();
-                exp =(DateTime) rd["dtExpiryDate"];
-                moinf.IssueDate = exp.ToShortDateString();
+                exp =(DateTime)rd["dtExpiryDate"];
+                moinf.ExpirationDate = exp.ToShortDateString();
                 moinf.FareBasisCode = rd["szFareBasisCode"].ToString();
                 moinf.DepartmentCode = rd["szDepartmentCode"].ToString();
                 issue = (DateTime)rd["dtIssued"];
