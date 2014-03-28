@@ -16,46 +16,87 @@ namespace UTT.Controllers
         // GET: /Default1/
        
         
-        public ActionResult Index(string traveler, bool? found,string UTTSelect)
+        public ActionResult Index(string traveler, bool? found,string UTTSelect,string airline,string custid)
         {
             if (found.HasValue)
             {
                 if (!found.Value)
-                    ViewBag.message = "No Unused Tickets Found For This Email Address.";
+                    ViewBag.message = "No Unused Tickets Found For This Email Address or Customer ID.";
                 return View();
             }
 
-            if (!string.IsNullOrEmpty(traveler))
+            if (!string.IsNullOrEmpty(traveler) && string.IsNullOrEmpty(custid))
             {
+                if(!string.IsNullOrEmpty(airline))
+                {
+                    traveler=traveler.ToUpper();
+                    custid = "";
+                    return RedirectToAction("DisplayUTT", new {email=traveler,UTTsel=UTTSelect,carrier=airline,cust=custid});
+                }
+                else{
+                    airline = "";
+                    custid = "";
                 traveler = traveler.ToUpper();
-                return RedirectToAction("DisplayUTT", new { email = traveler,UTTsel=UTTSelect });
+                return RedirectToAction("DisplayUTT", new { email = traveler,UTTsel=UTTSelect,carrier=airline, cust=custid });
+            }}
+            if(!string.IsNullOrEmpty(custid) && string.IsNullOrEmpty(traveler))
+            {
+                if (!string.IsNullOrEmpty(airline))
+                {
+                    traveler = "";
+                    return RedirectToAction("DisplayUTT", new { UTTsel = UTTSelect, carrier = airline, cust = custid,email=traveler });
+                }
+                else 
+                {
+                    traveler = "";
+                    airline = "";
+                    return RedirectToAction("DisplayUTT", new { UTTsel = UTTSelect,  cust = custid, carrier=airline,email=traveler });
+                }
+            }
+            if (string.IsNullOrEmpty(custid) && string.IsNullOrEmpty(traveler))
+            {
+                ViewBag.Message = "Please Enter Either a Traveler Email Address or a Customer ID";
+                return View();
+            }
+            if(!string.IsNullOrEmpty(traveler) && !string.IsNullOrEmpty(custid))
+            {
+                ViewBag.Message="Please Only Enter Either a Traveler Email Address or a Customer ID, But Not Both";
+                return View();
             }
             
             return View();
         }
         //shows the initial UTT results set on the webpage
-        public ActionResult DisplayUTT(string email,string UTTsel)
+        public ActionResult DisplayUTT(string email,string UTTsel, string carrier, string cust)
         {
             DateTime exp;
             string em = email;
             var u = new UTTModel();
-            u.TravelerName = getTravelerName(em);
-            if (u.TravelerName == "")
+            string air=carrier;
+            if (em != null && cust==null)
+            {
+                u.TravelerName = getTravelerName(em);
+            }
+            else if(em==null && cust!=null) { 
+                u.TravelerName = getClientName(cust); 
+            }
+            if (em == null && cust==null)
             { 
-            return RedirectToAction("Index", new { traveler = em, found = false });
+            return RedirectToAction("Index", new { traveler = em,custid=cust, found = false });
             } 
             List<UTTModel> utt = new List<UTTModel>();
 
-            if (u.TravelerName != null )
-            {
+           
                 if (UTTsel == "All") { 
                 SqlDataReader rd = null;
                 string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
                 SqlConnection sqlcon = new SqlConnection(con);
                 sqlcon.Open();
-                SqlCommand com = new SqlCommand("getUTTData", sqlcon);
+                SqlCommand com = new SqlCommand("sp_getUTTData", sqlcon);
                 com.CommandType = CommandType.StoredProcedure;
-                com.Parameters.AddWithValue("@CEmail", em);
+                com.Parameters.AddWithValue("@szEmail", em);
+                com.Parameters.AddWithValue("@szCustNo", cust);
+                com.Parameters.AddWithValue("@szAirline", carrier);
                 rd = com.ExecuteReader();
                
                 while (rd.Read())
@@ -77,7 +118,9 @@ namespace UTT.Controllers
                     sqlcon.Open();
                     SqlCommand com = new SqlCommand("sp_UTTUSED", sqlcon);
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.AddWithValue("@CEmail", em);
+                    com.Parameters.AddWithValue("@szEmail", em);
+                    com.Parameters.AddWithValue("@szCustNo", cust);
+                    com.Parameters.AddWithValue("@szAirline", carrier);
                     rd = com.ExecuteReader();
 
                     while (rd.Read())
@@ -100,7 +143,9 @@ namespace UTT.Controllers
                     sqlcon.Open();
                     SqlCommand com = new SqlCommand("sp_UTTOpen", sqlcon);
                     com.CommandType = CommandType.StoredProcedure;
-                    com.Parameters.AddWithValue("@CEmail", em);
+                    com.Parameters.AddWithValue("@szEmail", em);
+                    com.Parameters.AddWithValue("@szCustNo", cust);
+                    com.Parameters.AddWithValue("@szAirline", carrier);
                     rd = com.ExecuteReader();
                    
                     while (rd.Read())
@@ -118,7 +163,8 @@ namespace UTT.Controllers
           
             
             
-            }
+            
+            
             //if (more.HasValue)
             //{
             //    if (more.Value)
@@ -133,6 +179,7 @@ namespace UTT.Controllers
            
             return View(utt);
         }
+       
         public ActionResult DisplayMore(string ticketnum )
         {
             //if(more.HasValue)
@@ -212,6 +259,22 @@ namespace UTT.Controllers
                { traveler = rd["ClientName"].ToString(); }
                sqlcon.Close();
             return traveler;
+        }
+        public string getClientName(string cusid)
+        {
+            string cust = "";
+            SqlDataReader rd = null;
+            string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
+            SqlConnection sqlcon = new SqlConnection(con);
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand("sp_GetUTTCustName", sqlcon);
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@CustNo", cusid);
+            rd = com.ExecuteReader();
+            while (rd.Read())
+            { cust = rd["CompName"].ToString(); }
+            sqlcon.Close();
+            return cust;
         }
     }
 }
