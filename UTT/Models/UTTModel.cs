@@ -11,7 +11,7 @@ namespace UTT.Models
       
         
         public string TravelerName { get; set; }
-       
+        public string ClientName { get; set; }
        
        
         public string Value { get; set; }

@@ -18,8 +18,8 @@
                  
                 if(count==1)
                 {
-                <h1 style="color:white">Unused Ticket Data for @item.TravelerName </h1>
-            }
+                    <h1 style="color:white">Unused Ticket Data for @item.TravelerName </h1>
+                }
             }
         </div>
         <div class="float-left">
@@ -32,7 +32,8 @@
                     <th>Value*</th>
                  
                     <th>Ticket Number</th>
-                      
+                    <th>Passenger Name</th>
+                     <th>Company Name</th> 
                     <th>More Info</th>
                 </tr>
             @foreach (var ut in Model)
@@ -46,7 +47,8 @@
                 <td>@ut.Value</td>   
            @using(Html.BeginForm("DisplayMore","Home",FormMethod.Post)){
                     <td>@ut.TicketNumber <input type="text" style="visibility:hidden;" name="ticketnum" value="@ut.TicketNumber" /> </td>
-            
+                 <td>@ut.TravelerName</td>
+                    <td>@ut.ClientName</td>
                     <td>
                         
                         <button type="submit" id="More">More Info</button>

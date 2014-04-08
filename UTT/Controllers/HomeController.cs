@@ -72,17 +72,21 @@ namespace UTT.Controllers
             DateTime exp;
             string em = email;
             var u = new UTTModel();
+            string custom = cust;
             string air=carrier;
-            if (em != null && cust==null)
+            if (em != null && custom==null)
             {
                 u.TravelerName = getTravelerName(em);
+                String customerid = getCustID(em);
+                u.ClientName = getClientName(customerid);
             }
-            else if(em==null && cust!=null) { 
-                u.TravelerName = getClientName(cust); 
+            else if(em==null && custom!=null) { 
+                u.ClientName = getClientName(custom);
+                u.TravelerName = "";
             }
-            if (em == null && cust==null)
+            if (em == null && custom==null)
             { 
-            return RedirectToAction("Index", new { traveler = em,custid=cust, found = false });
+            return RedirectToAction("Index", new { traveler = em,custid=custom, found = false });
             } 
             List<UTTModel> utt = new List<UTTModel>();
 
@@ -95,7 +99,7 @@ namespace UTT.Controllers
                 SqlCommand com = new SqlCommand("sp_getUTTData", sqlcon);
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@szEmail", em);
-                com.Parameters.AddWithValue("@szCustNo", cust);
+                com.Parameters.AddWithValue("@szCustNo", custom);
                 com.Parameters.AddWithValue("@szAirline", carrier);
                 rd = com.ExecuteReader();
                
@@ -107,7 +111,17 @@ namespace UTT.Controllers
                     ut.Airline = rd["szAirline"].ToString();
                     ut.Value = rd["szTotalValue"].ToString();
                     ut.TicketNumber = rd["szTicketNumber"].ToString();
-                    ut.TravelerName = u.TravelerName;
+                    ut.ClientName = u.ClientName;
+                    
+                        ut.TravelerName = u.TravelerName;
+                        if (ut.TravelerName == "")
+                        {
+                            string fname = rd["szFirstName"].ToString();
+                            string lname = rd["szLastName"].ToString();
+                            string name = fname + " " + lname;
+                            ut.TravelerName = name;
+                        }
+                  
                     utt.Add(ut);
                 }}
                 if (UTTsel == "Used")
@@ -119,7 +133,7 @@ namespace UTT.Controllers
                     SqlCommand com = new SqlCommand("sp_UTTUSED", sqlcon);
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@szEmail", em);
-                    com.Parameters.AddWithValue("@szCustNo", cust);
+                    com.Parameters.AddWithValue("@szCustNo", custom);
                     com.Parameters.AddWithValue("@szAirline", carrier);
                     rd = com.ExecuteReader();
 
@@ -131,7 +145,21 @@ namespace UTT.Controllers
                         ut.Airline = rd["szAirline"].ToString();
                         ut.Value = rd["szTotalValue"].ToString();
                         ut.TicketNumber = rd["szTicketNumber"].ToString();
-                        ut.TravelerName = u.TravelerName;
+
+
+
+                        
+                            ut.TravelerName = u.TravelerName;
+                            if (ut.TravelerName == "")
+                        {
+                            string fname = rd["szFirstName"].ToString();
+                            string lname = rd["szLastName"].ToString();
+                            string name = fname + " " + lname;
+                            ut.TravelerName = name;
+                        }
+                            ut.ClientName = u.ClientName;
+                  
+                        
                         utt.Add(ut);
                     }
                 }
@@ -144,7 +172,7 @@ namespace UTT.Controllers
                     SqlCommand com = new SqlCommand("sp_UTTOpen", sqlcon);
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@szEmail", em);
-                    com.Parameters.AddWithValue("@szCustNo", cust);
+                    com.Parameters.AddWithValue("@szCustNo", custom);
                     com.Parameters.AddWithValue("@szAirline", carrier);
                     rd = com.ExecuteReader();
                    
@@ -156,7 +184,21 @@ namespace UTT.Controllers
                         ut.Airline = rd["szAirline"].ToString();
                         ut.Value = rd["szTotalValue"].ToString();
                         ut.TicketNumber = rd["szTicketNumber"].ToString();
-                        ut.TravelerName = u.TravelerName;
+
+
+                        ut.ClientName = u.ClientName;
+                      
+                            ut.TravelerName = u.TravelerName;
+                            if (ut.TravelerName == "")
+                            {
+                                string fname = rd["szFirstName"].ToString();
+                                string lname = rd["szLastName"].ToString();
+                                string name = fname + " " + lname;
+                                ut.TravelerName = name;
+                            }
+                  
+                        
+                      
                         utt.Add(ut);
                     }
                 }
@@ -179,6 +221,8 @@ namespace UTT.Controllers
            
             return View(utt);
         }
+
+        
        
         public ActionResult DisplayMore(string ticketnum )
         {
@@ -259,6 +303,24 @@ namespace UTT.Controllers
                { traveler = rd["ClientName"].ToString(); }
                sqlcon.Close();
             return traveler;
+        }
+        private string getCustID(string email)
+        {
+            string id = "";
+            SqlDataReader rd = null;
+            string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
+            SqlConnection sqlcon = new SqlConnection(con);
+            sqlcon.Open();
+            SqlCommand com = new SqlCommand("sp_GetUTTCustID", sqlcon);
+
+            com.CommandType = CommandType.StoredProcedure;
+            com.Parameters.AddWithValue("@CEmail", email);
+            rd = com.ExecuteReader();
+            while (rd.Read())
+            { id = rd["szCustomerNumber"].ToString(); }
+            sqlcon.Close();
+
+            return id;
         }
         public string getClientName(string cusid)
         {
