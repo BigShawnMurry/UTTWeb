@@ -77,11 +77,17 @@ namespace UTT.Controllers
             if (em != null && custom==null)
             {
                 u.TravelerName = getTravelerName(em);
+                if (u.TravelerName =="")
+                { return RedirectToAction("Index", new { traveler=em, custid=custom,found=false}); }
                 String customerid = getCustID(em);
                 u.ClientName = getClientName(customerid);
             }
             else if(em==null && custom!=null) { 
                 u.ClientName = getClientName(custom);
+                if(u.ClientName=="")
+                {
+                    return RedirectToAction("Index", new { traveler = em, custid = custom, found = false }); 
+                }
                 u.TravelerName = "";
             }
             if (em == null && custom==null)
