@@ -102,7 +102,7 @@ namespace UTT.Controllers
                 string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
                 SqlConnection sqlcon = new SqlConnection(con);
                 sqlcon.Open();
-                SqlCommand com = new SqlCommand("sp_getUTTData", sqlcon);
+                SqlCommand com = new SqlCommand("usp_UTT_All", sqlcon);
                 com.CommandType = CommandType.StoredProcedure;
                 com.Parameters.AddWithValue("@szEmail", em);
                 com.Parameters.AddWithValue("@szCustNo", custom);
@@ -136,7 +136,7 @@ namespace UTT.Controllers
                     string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
                     SqlConnection sqlcon = new SqlConnection(con);
                     sqlcon.Open();
-                    SqlCommand com = new SqlCommand("sp_UTTUSED", sqlcon);
+                    SqlCommand com = new SqlCommand("usp_UTT_USED", sqlcon);
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@szEmail", em);
                     com.Parameters.AddWithValue("@szCustNo", custom);
@@ -175,7 +175,7 @@ namespace UTT.Controllers
                     string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
                     SqlConnection sqlcon = new SqlConnection(con);
                     sqlcon.Open();
-                    SqlCommand com = new SqlCommand("sp_UTTOpen", sqlcon);
+                    SqlCommand com = new SqlCommand("usp_UTT_Open", sqlcon);
                     com.CommandType = CommandType.StoredProcedure;
                     com.Parameters.AddWithValue("@szEmail", em);
                     com.Parameters.AddWithValue("@szCustNo", custom);
@@ -239,7 +239,7 @@ namespace UTT.Controllers
             string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
             SqlConnection sqlcon = new SqlConnection(con);
             sqlcon.Open();
-            SqlCommand com = new SqlCommand("sp_UTTGetMore", sqlcon);
+            SqlCommand com = new SqlCommand("usp_UTT_GetMore", sqlcon);
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@ticknum", ticketnum);
             rd = com.ExecuteReader();
@@ -300,7 +300,7 @@ namespace UTT.Controllers
             string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
                 SqlConnection sqlcon = new SqlConnection(con);
                 sqlcon.Open();
-                SqlCommand com = new SqlCommand("GetUTTClientName",sqlcon);
+                SqlCommand com = new SqlCommand("usp_UTT_TravelerNAme",sqlcon);
                
                com.CommandType = CommandType.StoredProcedure;
                com.Parameters.AddWithValue("@CEmail", email);
@@ -317,7 +317,7 @@ namespace UTT.Controllers
             string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
             SqlConnection sqlcon = new SqlConnection(con);
             sqlcon.Open();
-            SqlCommand com = new SqlCommand("sp_GetUTTCustID", sqlcon);
+            SqlCommand com = new SqlCommand("usp_UTT_GetCustID", sqlcon);
 
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@CEmail", email);
@@ -335,7 +335,7 @@ namespace UTT.Controllers
             string con = ConfigurationManager.ConnectionStrings["UTTConnectionString"].ConnectionString;
             SqlConnection sqlcon = new SqlConnection(con);
             sqlcon.Open();
-            SqlCommand com = new SqlCommand("sp_GetUTTCustName", sqlcon);
+            SqlCommand com = new SqlCommand("usp_UTT_GetCustName", sqlcon);
             com.CommandType = CommandType.StoredProcedure;
             com.Parameters.AddWithValue("@CustNo", cusid);
             rd = com.ExecuteReader();
